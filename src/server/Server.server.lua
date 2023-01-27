@@ -1,5 +1,10 @@
 local knit = require(game.ReplicatedStorage.packages.Knit)
-
+local modules = script.Parent
+for _, module in modules:GetChildren() do
+    if module:IsA("ModuleScript") then
+        require(module)
+    end
+end
 knit.Start():catch(warn):await()
 local cash = knit.GetService("CashService")
 local rebirths = knit.GetService("RebirthService")

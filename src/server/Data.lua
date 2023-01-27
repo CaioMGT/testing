@@ -12,11 +12,6 @@ local template = {
 
 function data:SetTemplate(Template : table)
     template = Template
-    if game["Run Service"]:IsStudio() then
-        profStore = profServ.GetProfileStore("data-STUDIO-b1", template)
-    else
-        profStore = profServ.GetProfileStore("data-b1", template)
-    end
 end
 
 function data:RegisterPlayer(plr : Player)
@@ -62,6 +57,11 @@ function data:KnitInit()
             profile:Release()
         end
     end)
+	if game["Run Service"]:IsStudio() then
+        profStore = profServ.GetProfileStore("data-STUDIO-b1", template)
+    else
+        profStore = profServ.GetProfileStore("data-b1", template)
+    end
 end
 function data:KnitStart()
 	local cash = Knit.GetService("CashService")
@@ -69,8 +69,8 @@ function data:KnitStart()
 	game.Players.PlayerAdded:Connect(function(plr)
 		local plrData = data:RegisterPlayer(plr)
 		if plrData then
-			cash.SetCash(plrData.Data.Cash)
-			rebirth.SetRebirth(plrData.Data.Rebirths)
+			cash:SetCash(plr, plrData.Data.Cash)
+			rebirth:SetRebirths(plr, plrData.Data.Rebirths)
 		end
 	end)
 end
