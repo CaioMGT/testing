@@ -1,4 +1,5 @@
 local Knit = require(game.ReplicatedStorage.packages.Knit)
+local dataService
 local cash = Knit.CreateService{
     Name = "CashService",
     Client = {
@@ -6,15 +7,13 @@ local cash = Knit.CreateService{
         Cash = Knit.CreateProperty(0)
     }
 }
-local cashTracker = {
-
-}
 function cash:GetCash(plr : Player)
-    return cashTracker[plr] or 0
+    return dataService:GetData(plr).Data.Cash
 end
 
 function cash:SetCash(plr : Player, money : number)
-    cashTracker[plr] = money
+    if not dataService then return "Not ready" end
+    dataService:GetData(plr).Data.Cash = money
     self.Client.CashChanged:Fire(plr, money)
     self.Client.Cash:SetFor(plr, money)
 end
@@ -25,5 +24,8 @@ end
 
 function cash.Client:GetCash(plr : Player)
     return self.Server:GetCash(plr)
+end
+function cash:KnitStart()
+    dataService = Knit.GetService("DataService")
 end
 return cash
