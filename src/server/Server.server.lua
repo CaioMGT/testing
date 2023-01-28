@@ -1,5 +1,5 @@
 local knit = require(game.ReplicatedStorage.packages.Knit)
-local modules = script.Parent
+local modules = script.Parent.services
 for _, module in modules:GetChildren() do
     if module:IsA("ModuleScript") then
         require(module)
